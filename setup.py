@@ -10,6 +10,6 @@ setup(
     author='Mina Asham',
     author_email='mina.asham@hotmail.com',
     packages=find_packages(),
-    install_requires=[],
+    install_requires=['exifread'],
     long_description=open('README.md').read()
 )
