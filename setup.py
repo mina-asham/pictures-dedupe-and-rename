@@ -11,6 +11,6 @@ setup(
     author_email='mina.asham@hotmail.com',
     scripts=['dedupe-rename.py'],
     packages=find_packages(),
-    install_requires=['exifread'],
+    install_requires=['mock', 'exifread'],
     long_description=open('README.md').read()
 )
