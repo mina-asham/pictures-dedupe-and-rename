@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest import mock
+from mock import mock
 
 from pictures.dedupe import dedupe
 from tests import helpers
