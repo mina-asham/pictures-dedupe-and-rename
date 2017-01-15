@@ -1,10 +1,13 @@
 import glob
+import logging
 import os
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, SUPPRESS
 from argparse import ArgumentTypeError
 from sys import maxsize
 
 import pictures
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)s %(levelname)s %(message)s')
 
 
 def directory_type(arg):

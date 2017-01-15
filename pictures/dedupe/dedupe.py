@@ -1,10 +1,9 @@
 import filecmp
 import itertools
+import logging
 import os
 
-from pictures.loggers import logger_from
-
-logger = logger_from(__name__)
+logger = logging.getLogger(__name__)
 
 
 def dedupe(filenames, prefer_shorter=True):
