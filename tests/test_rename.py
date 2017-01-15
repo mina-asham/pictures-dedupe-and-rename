@@ -50,7 +50,7 @@ class TestRename(TestCase):
 
     @mock.patch('os.rename')
     @mock.patch('exifread.process_file', side_effect=create_mock_process_file(FILES))
-    @mock.patch('builtins.open' if sys.version_info.major >= 3 else '__builtin__.open', side_effect=MockFile)
+    @mock.patch('builtins.open' if sys.version_info[0] >= 3 else '__builtin__.open', side_effect=MockFile)
     @mock.patch('os.path.isfile', create_mock_isfile(FILES))
     @mock.patch('os.path', ntpath)
     def test_rename(self, mock_open, mock_process_file, mock_rename):
