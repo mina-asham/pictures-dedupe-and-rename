@@ -21,11 +21,11 @@ class TestDedupe(TestCase):
     def test_dedupe_prefer_shorter(self, mock_cmp: MagicMock, mock_remove: MagicMock):
         dedupe(self.FILES)
         self.assertEquals(mock_cmp.mock_calls, test_helpers.calls_from(itertools.combinations(self.FILES, 2)))
-        mock_remove.assert_called_once_with('filename1')
+        mock_remove.assert_called_once_with('filename2')
 
     @mock.patch('os.remove')
     @mock.patch('filecmp.cmp', side_effect=create_mock_cmp(EQUAL_FILES))
     def test_dedupe_prefer_longer(self, mock_cmp: MagicMock, mock_remove: MagicMock):
         dedupe(self.FILES, prefer_shorter=False)
         self.assertEquals(mock_cmp.mock_calls, test_helpers.calls_from(itertools.combinations(self.FILES, 2)))
-        mock_remove.assert_called_once_with('filename2')
+        mock_remove.assert_called_once_with('filename1')
