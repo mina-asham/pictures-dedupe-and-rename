@@ -1,4 +1,5 @@
 import os
+import time
 
 import exifread
 
@@ -42,12 +43,20 @@ def _new_filename_from(filename):
     return None
 
 
+def _can_parse_date(date_time):
+    try:
+        time.strptime(date_time, '%Y:%m:%d %H:%M:%S')
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
 def _date_created_from(filename):
     with open(filename, 'rb') as f:
         tags = exifread.process_file(f)
 
     date_time_original = tags.get('EXIF DateTimeOriginal')
-    if not date_time_original:
+    if not date_time_original or not _can_parse_date(date_time_original.values):
         return None
 
     return date_time_original.values.replace(':', '').replace(' ', '_')
