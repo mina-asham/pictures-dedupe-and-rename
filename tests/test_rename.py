@@ -1,7 +1,8 @@
+import ntpath
 from unittest import TestCase
-from mock import mock
 
 from exifread import IfdTag
+from mock import mock
 
 from pictures.rename import rename
 from tests import helpers
@@ -31,10 +32,6 @@ def create_mock_isfile(files):
     return lambda f: f in files
 
 
-def create_mock_join():
-    return lambda path, *paths: r'{}\{}'.format(path, '\\'.join(paths))
-
-
 class TestRename(TestCase):
     FILES = {
         r'C:\dir\no_exif_tags.jpeg': {},
@@ -51,19 +48,17 @@ class TestRename(TestCase):
     }
 
     @mock.patch('os.rename')
-    @mock.patch('os.path.isfile', side_effect=create_mock_isfile(FILES))
-    @mock.patch('os.path.join', side_effect=create_mock_join())
     @mock.patch('exifread.process_file', side_effect=create_mock_process_file(FILES))
     @mock.patch('builtins.open', side_effect=MockFile)
-    def test_rename(self, mock_open, mock_process_file, mock_join, mock_isfile, mock_rename):
+    @mock.patch('os.path.isfile', create_mock_isfile(FILES))
+    @mock.patch('os.path', ntpath)
+    def test_rename(self, mock_open, mock_process_file, mock_rename):
         rename(self.FILES)
 
         self.assertEquals(mock_open.mock_calls, helpers.calls_from(zip(self.FILES.keys(), ['rb'] * len(self.FILES))))
         self.assertEquals(mock_process_file.call_count, len(self.FILES))
-        self.assertEquals(mock_join.call_count, 7)  # number of checks
-        self.assertEquals(mock_isfile.call_count, 7)  # number of checks
-        self.assertEquals(mock_rename.mock_calls, helpers.calls_from([
+        self.assertEquals(sorted(mock_rename.mock_calls), sorted(helpers.calls_from([
             (r'C:\dir\timestamp_does_not_exist.jpeg', r'C:\dir\20161029_154356.jpeg'),
             (r'C:\dir\timestamp_does_exist.jpeg', r'C:\dir\20160204_120335_1.jpeg'),
             (r'C:\dir\timestamp_does_exist_multiple.jpeg', r'C:\dir\20170103_142345_3.jpeg')
-        ]))
+        ])))
