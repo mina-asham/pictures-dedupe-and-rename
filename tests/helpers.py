@@ -1,4 +1,4 @@
-from unittest.mock import call
+from mock import call
 
 
 def calls_from(list_args):
