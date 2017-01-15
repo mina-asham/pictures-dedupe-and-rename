@@ -1,6 +1,5 @@
 from unittest import TestCase
 from unittest import mock
-from unittest.mock import MagicMock
 
 from pictures.dedupe import dedupe
 from tests import helpers
@@ -17,7 +16,7 @@ class TestDedupe(TestCase):
 
     @mock.patch('os.remove')
     @mock.patch('filecmp.cmp', side_effect=create_mock_cmp(EQUAL_FILES))
-    def test_dedupe_prefer_shorter(self, mock_cmp: MagicMock, mock_remove: MagicMock):
+    def test_dedupe_prefer_shorter(self, mock_cmp, mock_remove):
         dedupe(self.FILES)
         self.assertEquals(mock_cmp.mock_calls, helpers.calls_from([
             ('filename1', 'filename2'),
@@ -33,7 +32,7 @@ class TestDedupe(TestCase):
 
     @mock.patch('os.remove')
     @mock.patch('filecmp.cmp', side_effect=create_mock_cmp(EQUAL_FILES))
-    def test_dedupe_prefer_longer(self, mock_cmp: MagicMock, mock_remove: MagicMock):
+    def test_dedupe_prefer_longer(self, mock_cmp, mock_remove):
         dedupe(self.FILES, prefer_shorter=False)
         self.assertEquals(mock_cmp.mock_calls, helpers.calls_from([
             ('filename1', 'filename2'),
