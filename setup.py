@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='PicturesDedupeRename',
-    version='1.0.4',
+    version='1.0.5',
     description='Dedupe a set of pictures in a given folder and rename them using the yyyymmdd_HHMMss format',
     url='https://github.com/mina-asham/pictures-dedupe-and-rename',
     license='MIT',
